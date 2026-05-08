@@ -63,6 +63,7 @@ export class RemoteClient {
         remoteBaseDir,
         saveUpdatedConfigFunc
       );
+    /* @ts-ignore ONEDRIVE DISABLED
     } else if (serviceType === "onedrive") {
       if (vaultName === undefined || saveUpdatedConfigFunc === undefined) {
         throw Error(
@@ -76,6 +77,7 @@ export class RemoteClient {
         remoteBaseDir,
         saveUpdatedConfigFunc
       );
+    } */
     } else {
       throw Error(`not supported service type ${this.serviceType}`);
     }
