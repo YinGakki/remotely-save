@@ -12,6 +12,7 @@ on:
   push:
     tags:
       - "*" # Push events to matching any tag format, i.e. 1.0, 20.15.10
+      workflow_dispatch: # 添加这一行，允许手动点击运行
 
 jobs:
   build:
