@@ -38,22 +38,22 @@ import {
   sendAuthReq as sendAuthReqDropbox,
   setConfigBySuccessfullAuthInplace as setConfigBySuccessfullAuthInplaceDropbox,
 } from "./remoteForDropbox";
-import {
+/* import {
   AccessCodeResponseSuccessfulType,
   DEFAULT_ONEDRIVE_CONFIG,
   sendAuthReq as sendAuthReqOnedrive,
   setConfigBySuccessfullAuthInplace as setConfigBySuccessfullAuthInplaceOnedrive,
-} from "./remoteForOnedrive";
+} from "./remoteForOnedrive"; */
 import { DEFAULT_S3_CONFIG } from "./remoteForS3";
 import { DEFAULT_WEBDAV_CONFIG } from "./remoteForWebdav";
 import { RemotelySaveSettingTab } from "./settings";
-import { 
-  getRemoteMetadata, 
-  getRemoteStates, 
-  SyncPlanType, 
+import {
+  getRemoteMetadata,
+  getRemoteStates,
+  SyncPlanType,
   SyncStatusType,
-  doActualSync, 
-  getSyncPlan, 
+  doActualSync,
+  getSyncPlan,
   isPasswordOk
 } from "./sync";
 import { messyConfigToNormal, normalConfigToMessy } from "./configPersist";
@@ -78,7 +78,7 @@ const DEFAULT_SETTINGS: RemotelySavePluginSettings = {
   s3: DEFAULT_S3_CONFIG,
   webdav: DEFAULT_WEBDAV_CONFIG,
   dropbox: DEFAULT_DROPBOX_CONFIG,
-  onedrive: DEFAULT_ONEDRIVE_CONFIG,
+  // onedrive: DEFAULT_ONEDRIVE_CONFIG, // DISABLED
   password: "",
   serviceType: "s3",
   debugEnabled: false,
@@ -158,7 +158,7 @@ export default class RemotelySavePlugin extends Plugin {
               new Notice("2/" + this.i18n.t("syncrun_step8", {maxSteps: "2"}), timeout);
             }
           }
-          
+
           return;
         }
 
@@ -183,7 +183,7 @@ export default class RemotelySavePlugin extends Plugin {
 
         if (this.currSyncMsg !== undefined && this.currSyncMsg !== "") {
           log.debug(this.currSyncMsg);
-        }  
+        }
       }
 
       return;
@@ -227,7 +227,7 @@ export default class RemotelySavePlugin extends Plugin {
       );
 
       this.updateSyncStatus("checking_password");
-      
+
       const passwordCheckResult = await isPasswordOk(
         remoteRsp.Contents,
         this.settings.password
@@ -247,10 +247,10 @@ export default class RemotelySavePlugin extends Plugin {
       const metadataFile = await getRemoteMetadata(remoteRsp.Contents, client, this.settings.password);
 
       const remoteStates = await getRemoteStates(
-        remoteRsp.Contents, 
-        this.db, 
-        this.vaultRandomID, 
-        client.serviceType, 
+        remoteRsp.Contents,
+        this.db,
+        this.vaultRandomID,
+        client.serviceType,
         this.settings.password
       );
 
@@ -465,13 +465,13 @@ export default class RemotelySavePlugin extends Plugin {
       );
     } else {
       setIcon(this.syncRibbon, iconNameSyncWait);
-      
+
       this.syncRibbon.setAttribute("aria-label", this.manifest.name);
     }
   }
 
   private updateStatusBar(syncQueue?: {i: number, total: number}) {
-    const enabled = this.statusBarElement !== undefined && 
+    const enabled = this.statusBarElement !== undefined &&
       this.settings.enableStatusBarInfo === true;
 
     // Update status text
@@ -482,8 +482,8 @@ export default class RemotelySavePlugin extends Plugin {
       if (enabled) {
         this.statusBarElement.setAttribute("aria-label", lastSynced.lastSyncLabelMsg);
       }
-    } 
-    
+    }
+
     if (this.syncStatus === "preparing") {
       this.syncStatusText = this.i18n.t("syncrun_status_preparing");
     }
@@ -493,7 +493,7 @@ export default class RemotelySavePlugin extends Plugin {
         this.syncStatusText = this.i18n.t("syncrun_status_progress", {
           current: syncQueue.i.toString(),
           total: syncQueue.total.toString()
-        });  
+        });
       } else {
         this.syncStatusText = this.i18n.t("syncrun_status_syncing");
       }
@@ -710,6 +710,7 @@ export default class RemotelySavePlugin extends Plugin {
       }
     );
 
+    /* ONEDRIVE DISABLED
     this.registerObsidianProtocolHandler(
       COMMAND_CALLBACK_ONEDRIVE,
       async (inputParams) => {
@@ -787,6 +788,7 @@ export default class RemotelySavePlugin extends Plugin {
         }
       }
     );
+    */
 
     this.syncRibbon = this.addRibbonIcon(
       iconNameSyncWait,
@@ -862,7 +864,7 @@ export default class RemotelySavePlugin extends Plugin {
       icon: iconNameStatusBar,
       callback: () => new Notice(this.syncStatusText)
     });
-    
+
     this.addSettingTab(new RemotelySaveSettingTab(this.app, this));
 
     // Show status bar show by default on desktop only
@@ -920,6 +922,7 @@ export default class RemotelySavePlugin extends Plugin {
     if (this.settings.dropbox.remoteBaseDir === undefined) {
       this.settings.dropbox.remoteBaseDir = "";
     }
+    /* ONEDRIVE DISABLED
     if (this.settings.onedrive.clientID === "") {
       this.settings.onedrive.clientID = DEFAULT_SETTINGS.onedrive.clientID;
     }
@@ -929,6 +932,7 @@ export default class RemotelySavePlugin extends Plugin {
     if (this.settings.onedrive.remoteBaseDir === undefined) {
       this.settings.onedrive.remoteBaseDir = "";
     }
+    */
     if (this.settings.webdav.manualRecursive === undefined) {
       this.settings.webdav.manualRecursive = false;
     }
@@ -976,6 +980,7 @@ export default class RemotelySavePlugin extends Plugin {
         current + 1000 * 60 * 60 * 24 * 30;
       needSave = true;
     }
+    /* ONEDRIVE DISABLED
     if (
       this.settings.onedrive.refreshToken !== "" &&
       this.settings.onedrive.credentialsShouldBeDeletedAtTime === undefined
@@ -984,6 +989,7 @@ export default class RemotelySavePlugin extends Plugin {
         current + 1000 * 60 * 60 * 24 * 30;
       needSave = true;
     }
+    */
 
     // check expired or not
     let dropboxExpired = false;
@@ -996,6 +1002,7 @@ export default class RemotelySavePlugin extends Plugin {
       needSave = true;
     }
 
+    /* ONEDRIVE DISABLED
     let onedriveExpired = false;
     if (
       this.settings.onedrive.refreshToken !== "" &&
@@ -1005,6 +1012,7 @@ export default class RemotelySavePlugin extends Plugin {
       this.settings.onedrive = cloneDeep(DEFAULT_ONEDRIVE_CONFIG);
       needSave = true;
     }
+    */
 
     // save back
     if (needSave) {
@@ -1012,22 +1020,20 @@ export default class RemotelySavePlugin extends Plugin {
     }
 
     // send notice
-    if (dropboxExpired && onedriveExpired) {
-      new Notice(
-        `${this.manifest.name}: You haven't manually auth Dropbox and OneDrive for a while, you need to re-auth them again.`,
-        6000
-      );
-    } else if (dropboxExpired) {
+    if (dropboxExpired) {
       new Notice(
         `${this.manifest.name}: You haven't manually auth Dropbox for a while, you need to re-auth it again.`,
         6000
       );
-    } else if (onedriveExpired) {
+    }
+    /* ONEDRIVE DISABLED
+    else if (onedriveExpired) {
       new Notice(
         `${this.manifest.name}: You haven't manually auth OneDrive for a while, you need to re-auth it again.`,
         6000
       );
     }
+    */
   }
 
   async getVaultRandomIDFromOldConfigFile() {
@@ -1099,7 +1105,7 @@ export default class RemotelySavePlugin extends Plugin {
     }
   }
 
-  toggleStatusBar(enabled: boolean) {  
+  toggleStatusBar(enabled: boolean) {
     this.statusBarElement?.remove();
 
     const statusBar = document.getElementsByClassName("status-bar")[0] as HTMLElement;
@@ -1116,7 +1122,7 @@ export default class RemotelySavePlugin extends Plugin {
       // Enable status bar on mobile
       if (Platform.isMobile) {
         statusBar.addClass("remotely-sync-show-status-bar");
-        
+
         // Shifts up the status bar on phone to not cover the navmenu
         if (Platform.isPhone) {
           const navBar = document.getElementsByClassName("mobile-navbar")[0] as HTMLElement;
@@ -1135,8 +1141,8 @@ export default class RemotelySavePlugin extends Plugin {
       // Create remotely sync element
       this.statusBarElement = this.addStatusBarItem();
       this.statusBarElement.createEl("span");
-      this.statusBarElement.setAttribute("data-tooltip-position", "top");    
-      this.updateStatusBar(); 
+      this.statusBarElement.setAttribute("data-tooltip-position", "top");
+      this.updateStatusBar();
     }
   }
 
@@ -1199,7 +1205,7 @@ export default class RemotelySavePlugin extends Plugin {
     if (enabled === false || this.settings.syncOnSaveAfterMilliseconds === -1) {
       return;
     }
-    
+
     // Register vault change event
     this.syncOnSaveEvent = this.app.vault.on("modify", () => {
       if (this.syncStatus !== "idle" || alreadyScheduled) {
@@ -1211,7 +1217,7 @@ export default class RemotelySavePlugin extends Plugin {
 
       setTimeout(async () => {
         log.debug("Sync on save ran");
-        await this.syncRun("auto");  
+        await this.syncRun("auto");
         alreadyScheduled = false;
       }, this.settings.syncOnSaveAfterMilliseconds);
     });
@@ -1240,7 +1246,7 @@ export default class RemotelySavePlugin extends Plugin {
 
           setTimeout(async () => {
             log.debug("Sync on save ran");
-            await this.syncRun("auto");  
+            await this.syncRun("auto");
             alreadyScheduled = false;
           }, this.settings.syncOnSaveAfterMilliseconds);
 
@@ -1274,7 +1280,7 @@ export default class RemotelySavePlugin extends Plugin {
             }
           })
         }
-      
+
         if (shouldCall && !byPlugin) {
           log.debug("Status bar item added, refreshing status bar.")
           this.toggleStatusBar(true);
@@ -1285,10 +1291,10 @@ export default class RemotelySavePlugin extends Plugin {
       this.statusBarObserver.observe(statusBar, { childList: true});
     }
   }
-  
+
   async getMetadataMtime() {
     const client = this.getRemoteClient(this);
-    
+
     const remoteFiles = await client.listFromRemote();
     const remoteMetadataFile = await getRemoteMetadata(remoteFiles.Contents, client, this.settings.password);
 
@@ -1315,10 +1321,10 @@ export default class RemotelySavePlugin extends Plugin {
     const metadataFile = await getRemoteMetadata(remoteRsp.Contents, client, this.settings.password);
 
     const remoteStates = await getRemoteStates(
-      remoteRsp.Contents, 
-      this.db, 
-      this.vaultRandomID, 
-      client.serviceType, 
+      remoteRsp.Contents,
+      this.db,
+      this.vaultRandomID,
+      client.serviceType,
       this.settings.password
     );
 

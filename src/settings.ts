@@ -39,10 +39,12 @@ import {
   sendAuthReq as sendAuthReqDropbox,
   setConfigBySuccessfullAuthInplace,
 } from "./remoteForDropbox";
+/* ONEDRIVE DISABLED
 import {
   DEFAULT_ONEDRIVE_CONFIG,
   getAuthUrlAndVerifier as getAuthUrlAndVerifierOnedrive,
 } from "./remoteForOnedrive";
+*/
 import { messyConfigToNormal } from "./configPersist";
 import type { TransItemType } from "./i18n";
 import { checkHasSpecialCharForDir } from "./misc";

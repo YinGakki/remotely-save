@@ -29,6 +29,10 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: "process/browser",
     }),
+    // Ignore @azure/msal-node (Node.js only, not compatible with browser)
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^@azure\/msal-node$/,
+    }),
   ],
   module: {
     rules: [
