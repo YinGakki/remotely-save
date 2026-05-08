@@ -63,21 +63,8 @@ export class RemoteClient {
         remoteBaseDir,
         saveUpdatedConfigFunc
       );
-    /* @ts-ignore ONEDRIVE DISABLED
-    } else if (serviceType === "onedrive") {
-      if (vaultName === undefined || saveUpdatedConfigFunc === undefined) {
-        throw Error(
-          "remember to provide vault name and callback while init onedrive client"
-        );
-      }
-      const remoteBaseDir = onedriveConfig.remoteBaseDir || vaultName;
-      this.onedriveConfig = onedriveConfig;
-      this.onedriveClient = onedrive.getOnedriveClient(
-        this.onedriveConfig,
-        remoteBaseDir,
-        saveUpdatedConfigFunc
-      );
-    } */
+    } else if (false) {
+      /* ONEDRIVE DISABLED - intentionally broken to prevent onedrive branch */
     } else {
       throw Error(`not supported service type ${this.serviceType}`);
     }
@@ -128,7 +115,7 @@ export class RemoteClient {
         uploadRaw,
         rawContent
       );
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.uploadToRemote(
         this.onedriveClient,
         fileOrFolderPath,
@@ -156,7 +143,7 @@ export class RemoteClient {
       return await webdav.listFromRemote(this.webdavClient, prefix);
     } else if (this.serviceType === "dropbox") {
       return await dropbox.listFromRemote(this.dropboxClient, prefix);
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.listFromRemote(this.onedriveClient, prefix);
     } else {
       throw Error(`not supported service type ${this.serviceType}`);
@@ -202,7 +189,7 @@ export class RemoteClient {
         remoteEncryptedKey,
         skipSaving
       );
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.downloadFromRemote(
         this.onedriveClient,
         fileOrFolderPath,
@@ -244,7 +231,7 @@ export class RemoteClient {
         password,
         remoteEncryptedKey
       );
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.deleteFromRemote(
         this.onedriveClient,
         fileOrFolderPath,
@@ -267,7 +254,7 @@ export class RemoteClient {
       return await webdav.checkConnectivity(this.webdavClient, callbackFunc);
     } else if (this.serviceType === "dropbox") {
       return await dropbox.checkConnectivity(this.dropboxClient, callbackFunc);
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.checkConnectivity(
         this.onedriveClient,
         callbackFunc
@@ -280,7 +267,7 @@ export class RemoteClient {
   getUser = async () => {
     if (this.serviceType === "dropbox") {
       return await dropbox.getUserDisplayName(this.dropboxClient);
-    } else if (this.serviceType === "onedrive") {
+    } else if (false) /* ONEDRIVE DISABLED */ {
       return await onedrive.getUserDisplayName(this.onedriveClient);
     } else {
       throw Error(`not supported service type ${this.serviceType}`);
