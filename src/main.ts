@@ -43,7 +43,7 @@ import {
   DEFAULT_ONEDRIVE_CONFIG,
   sendAuthReq as sendAuthReqOnedrive,
   setConfigBySuccessfullAuthInplace as setConfigBySuccessfullAuthInplaceOnedrive,
-} from "./remoteForOnedrive"; */
+} from "./remoteForOnedriveStub";
 import { DEFAULT_S3_CONFIG } from "./remoteForS3";
 import { DEFAULT_WEBDAV_CONFIG } from "./remoteForWebdav";
 import { RemotelySaveSettingTab } from "./settings";
@@ -78,7 +78,7 @@ const DEFAULT_SETTINGS: RemotelySavePluginSettings = {
   s3: DEFAULT_S3_CONFIG,
   webdav: DEFAULT_WEBDAV_CONFIG,
   dropbox: DEFAULT_DROPBOX_CONFIG,
-  // onedrive: DEFAULT_ONEDRIVE_CONFIG, // DISABLED
+  onedrive: DEFAULT_ONEDRIVE_CONFIG, // DISABLED - kept for type compatibility
   password: "",
   serviceType: "s3",
   debugEnabled: false,

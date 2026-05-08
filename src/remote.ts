@@ -7,7 +7,7 @@ import type {
   WebdavConfig,
 } from "./baseTypes";
 import * as dropbox from "./remoteForDropbox";
-import * as onedrive from "./remoteForOnedrive";
+import * as onedrive from "./remoteForOnedriveStub";
 import * as s3 from "./remoteForS3";
 import * as webdav from "./remoteForWebdav";
 

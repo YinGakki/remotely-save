@@ -39,12 +39,10 @@ import {
   sendAuthReq as sendAuthReqDropbox,
   setConfigBySuccessfullAuthInplace,
 } from "./remoteForDropbox";
-/* ONEDRIVE DISABLED
 import {
   DEFAULT_ONEDRIVE_CONFIG,
   getAuthUrlAndVerifier as getAuthUrlAndVerifierOnedrive,
-} from "./remoteForOnedrive";
-*/
+} from "./remoteForOnedriveStub";
 import { messyConfigToNormal } from "./configPersist";
 import type { TransItemType } from "./i18n";
 import { checkHasSpecialCharForDir } from "./misc";
@@ -387,6 +385,7 @@ class DropboxAuthModal extends Modal {
   }
 }
 
+// @ts-ignore
 export class OnedriveAuthModal extends Modal {
   readonly plugin: RemotelySavePlugin;
   readonly authDiv: HTMLDivElement;
@@ -452,6 +451,7 @@ export class OnedriveAuthModal extends Modal {
   }
 }
 
+// @ts-ignore
 export class OnedriveRevokeAuthModal extends Modal {
   readonly plugin: RemotelySavePlugin;
   readonly authDiv: HTMLDivElement;
